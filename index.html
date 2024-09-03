@@ -13,14 +13,21 @@
     <script>
         function generateWordPuzzles(words) {
             let wordCount = 0;
-            while(wordCount<10) {
+            while (wordCount < 10) {
                 let randomIndex = Math.floor(Math.random() * words.length);
-                let word1 = words[randomIndex];
-                if (word1.length > 4) {
-                    let lastPartOfWord1 = word1.substr(word1.length - 4);
+                let word1 = words[randomIndex].trim();
+                if (word1.length > 6) {
+                    let lastPartOfWord1 = word1.substr(word1.length - 3);
                     for (let otherWord of words) {
-                        if (otherWord != word1 && otherWord.startsWith(lastPartOfWord1)) {
-                            document.body.innerHTML += `<div>${word1} ${otherWord}</div>`;
+                        if (otherWord.length > 6 && otherWord != word1 && otherWord.startsWith(lastPartOfWord1)) {
+                            let firstPartOfWord1 = word1.substr(0, word1.length - 3);
+                            let lastPartOfOtherWord = otherWord.substr(3);
+                            document.body.innerHTML += /*HTML*/`
+                                <div>
+                                    ${firstPartOfWord1}___ ___${lastPartOfOtherWord}
+                                    <button onclick="this.innerHTML = '${word1} ${otherWord.trim()}'">?</button>
+                                </div>
+                                `;
                             wordCount++;
                             break;
                         }
@@ -36,7 +43,7 @@
                 return;
             }
             let fileContent = await response.text();
-            words = fileContent.split('\n');
+            const words = fileContent.split('\n');
             generateWordPuzzles(words);
         }
     </script>
