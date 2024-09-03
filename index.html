@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body onload="readFile()">
+
+
+    <script>
+        function generateWordPuzzles(words) {
+            let wordCount = 0;
+            while(wordCount<10) {
+                let randomIndex = Math.floor(Math.random() * words.length);
+                let word1 = words[randomIndex];
+                if (word1.length > 4) {
+                    let lastPartOfWord1 = word1.substr(word1.length - 4);
+                    for (let otherWord of words) {
+                        if (otherWord != word1 && otherWord.startsWith(lastPartOfWord1)) {
+                            document.body.innerHTML += `<div>${word1} ${otherWord}</div>`;
+                            wordCount++;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        async function readFile() {
+            const response = await fetch('words.txt');
+            if (!response.ok) {
+                document.body.innerHTML = 'Feil i lesing av ordliste';
+                return;
+            }
+            let fileContent = await response.text();
+            words = fileContent.split('\n');
+            generateWordPuzzles(words);
+        }
+    </script>
+</body>
+
+</html>
