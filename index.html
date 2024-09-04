@@ -5,13 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="words.js"></script>
 </head>
 
-<body onload="readFile()">
-
-
+<body onload="generateWordPuzzles()">
     <script>
-        function generateWordPuzzles(words) {
+        function generateWordPuzzles() {
             let wordCount = 0;
             while (wordCount < 10) {
                 let randomIndex = Math.floor(Math.random() * words.length);
@@ -34,17 +33,6 @@
                     }
                 }
             }
-        }
-
-        async function readFile() {
-            const response = await fetch('words.txt');
-            if (!response.ok) {
-                document.body.innerHTML = 'Feil i lesing av ordliste';
-                return;
-            }
-            let fileContent = await response.text();
-            const words = fileContent.split('\n');
-            generateWordPuzzles(words);
         }
     </script>
 </body>
